@@ -1,0 +1,11 @@
+ρ(p) := 31 #primzahl
+ρ(r) := 0 #ergebnis
+α1 := 2 #laufvariable i
+α2 := ρ(p) ÷ 2
+loop: if α1 > α2 then goto prime
+α3 := ρ(p) % α1 #testen ob es teilerfrei ist
+if α3 = 0 then goto notprime
+α1 := α1 + 1 # i+=1
+goto loop
+prime: ρ(r) := 1 #kein Teile gefunden
+notprime: return

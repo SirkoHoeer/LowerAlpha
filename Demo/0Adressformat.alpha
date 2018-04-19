@@ -1,0 +1,27 @@
+init:ρ(x) := 0
+ρ(a) := 10
+ρ(b) := 8
+ρ(c) := 5
+ρ(d) := 4
+ρ(e) := 1
+return
+
+main: call init 
+α := ρ(a)
+push
+α := ρ(b)
+push
+stack+
+α := ρ(c)
+push
+α := ρ(d)
+push
+α := ρ(e)
+push
+stack*
+stack-
+stack÷
+pop
+ρ(x) := α
+
+return

@@ -1,0 +1,12 @@
+#Diese Datei enthält alle regulären Ausdrücke um die null-Adress Alpha-Notation zu beschreiben
+#Bitte vorsichtig sein mit Änderungen
+
+#Reihenfolge der Ausdrücke
+#1. load
+#3. conditional jump
+#4. jump
+#5. push
+#6. pop
+#7. stack arithmetic operation
+#8. call
+#9. return

@@ -1,0 +1,31 @@
+ # This file is part of loweralpha, an interactive development environment for alpha-notation.
+
+ # Copyright (C) 2016 Jan Müller (muellerj@informatik.uni-bonn.de)
+
+ # loweralpha is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+
+ # loweralpha is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+
+ # You should have received a copy of the GNU General Public License
+ # along with loweralpha.  If not, see <http://www.gnu.org/licenses/>.
+
+ # Authores: Sirko Höer, Jan Müller, Maximus S.
+
+
+ρ(p) := 31 #primzahl
+ρ(r) := 0 #ergebnis
+α1 := 2 #laufvariable i
+α2 := ρ(p) ÷ 2
+loop: if α1 > α2 then goto prime
+α3 := ρ(p) % α1 #testen ob es teilerfrei ist
+if α3 = 0 then goto notprime
+α1 := α1 + 1 # i+=1
+goto loop
+prime: ρ(r) := 1 #kein Teile gefunden
+notprime: return

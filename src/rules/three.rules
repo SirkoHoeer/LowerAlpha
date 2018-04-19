@@ -1,0 +1,49 @@
+#Diese Datei enthält alle regulären Ausdrücke um die drei-Adress Alpha-Notation zu beschreiben
+#Bitte vorsichtig sein mit Änderungen
+
+#Reihenfolge der Ausdrücke
+#1. load
+#2. arithmetic operation
+#3. conditional jump
+#4. jump
+#5. push
+#6. pop
+#7. stack arithmetic operation
+#8. call
+#9. return
+
+#old expression
+#(?<adr2>α\d*|ρ[(](\w\d*|\d+)[)]|\d+)
+#new expression
+#(?<adr1>α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)])
+#expression
+#(?<adr1>α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)])
+#expression with constant
+#(?<adr1>(-\d+|\d+)|α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)])
+
+#1. load
+(?<adr1>α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)]):=(?<adr2>(-\d+|\d+)|α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)])
+
+#2. arithmetic operation
+(?<adr1>α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)]):=(?<adr2>(-\d+|\d+)|α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)])(?<op>[+*-÷%])(?<adr3>(-\d+|\d+)|α\d*|ρ[(](\w|(α\d*)|\d+|ρ[(](\w|\d+)[)])[)])
+
+#3.conditional jump
+if(?<adr1>α\d*)(?<op><|>|=)(?<adr2>α\d*|\d+)thengoto(?<adr3>\w+)
+
+#4. jump
+goto(?<adr1>\w+)
+
+#5. push
+push
+
+#6. pop
+pop
+
+#7. stack arithmetic operation
+stack(?<op>[+*-÷%])
+
+#8. call
+call(?<adr1>\w+)
+
+#9. return
+return
