@@ -5,52 +5,43 @@ import model.Instruction;
 
 public class Program {
 
-	private ArrayList<Instruction> progCode;
+    private ArrayList<Instruction> progCode;
     private int memSize;
     private int regSize;
     private int entryPoint;
 
-
-    public Program(int regSize,int memSize) 
-    {
-    	progCode = new ArrayList<Instruction>();
+    public Program(int regSize, int memSize) {
+        progCode = new ArrayList<Instruction>();
         this.memSize = memSize;
         this.regSize = regSize;
     }
 
-    public boolean shouldBreak(int _pc)
-    {
-    	progCode.get(_pc).setBreakPoint(true);
+    public boolean shouldBreak(int _pc) {
+        progCode.get(_pc).setBreakPoint(true);
         return true;
     }
 
-    public int getRegSize() 
-    {
+    public int getRegSize() {
         return this.regSize;
     }
 
-    public int getMemSize() 
-    {
+    public int getMemSize() {
         return this.memSize;
     }
 
-    public void setEntryPoint(int entryPoint)
-    {
-		this.entryPoint = entryPoint;
-	}
-    
-    public int getEntryPoint()
-    {
-		return this.entryPoint;
-	}
-    
-    public void addInstruction(Instruction inst) 
-    {
-    	this.progCode.add(inst);
+    public void setEntryPoint(int entryPoint) {
+        this.entryPoint = entryPoint;
     }
 
-    public ArrayList<Instruction> getProgCode() 
-    {
+    public int getEntryPoint() {
+        return this.entryPoint;
+    }
+
+    public void addInstruction(Instruction inst) {
+        this.progCode.add(inst);
+    }
+
+    public ArrayList<Instruction> getProgCode() {
         return progCode;
     }
 }

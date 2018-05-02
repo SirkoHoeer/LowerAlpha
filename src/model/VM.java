@@ -124,6 +124,7 @@ public class VM extends Thread {
             }
 
             if (programCounter <= progCode.size() && this.status != VM.TERMINATED) {
+                System.out.println(progCode.get(programCounter));
                 workingInstraktion(progCode.get(programCounter));
             } else {
                 return;
@@ -197,7 +198,7 @@ public class VM extends Thread {
                             this.memory[i.addrs[0]] = i.addrs[1];
                             break;
                         case Instruction.FLAG_IN_REG_MEM:
-                            this.register[memory[i.addrs[0]]] = i.addrs[1];
+                            this.memory[register[i.addrs[0]]] = i.addrs[1];
                             break;
                         case Instruction.FLAG_IN_MEM_MEM:
                             this.memory[memory[i.addrs[0]]] = i.addrs[1];
@@ -214,7 +215,7 @@ public class VM extends Thread {
                             this.memory[i.addrs[0]] = register[i.addrs[1]];
                             break;
                         case Instruction.FLAG_IN_REG_MEM:
-                            this.register[memory[i.addrs[0]]] = register[i.addrs[1]];
+                            this.memory[register[i.addrs[0]]] = register[i.addrs[1]];
                             break;
                         case Instruction.FLAG_IN_MEM_MEM:
                             this.memory[memory[i.addrs[0]]] = register[i.addrs[1]];
@@ -231,7 +232,7 @@ public class VM extends Thread {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]];
                             break;
                         case Instruction.FLAG_IN_REG_MEM:
-                            this.register[memory[i.addrs[0]]] = memory[i.addrs[1]];
+                            this.memory[register[i.addrs[0]]] = memory[i.addrs[1]];
                             break;
                         case Instruction.FLAG_IN_MEM_MEM:
                             this.memory[memory[i.addrs[0]]] = memory[i.addrs[1]];
@@ -242,22 +243,21 @@ public class VM extends Thread {
                 } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
                     switch (i.flags[0]) {
                         case Instruction.FLAG_REGISTER:
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]];
                             break;
                         case Instruction.FLAG_DIRECT_MEM:
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]];
                             break;
                         case Instruction.FLAG_IN_REG_MEM:
-                            this.register[memory[i.addrs[0]]] = register[memory[i.addrs[1]]];
-
+                            this.memory[register[i.addrs[0]]] = memory[register[i.addrs[1]]];
                             break;
                         case Instruction.FLAG_IN_MEM_MEM:
-                            this.memory[memory[i.addrs[0]]] = register[memory[i.addrs[1]]];
+                            this.memory[memory[i.addrs[0]]] = memory[register[i.addrs[1]]];
                             break;
                         default:
                             break;
                     }
-                } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
+                } else  if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                     switch (i.flags[0]) {
                         case Instruction.FLAG_REGISTER:
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]];
@@ -266,8 +266,7 @@ public class VM extends Thread {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]];
                             break;
                         case Instruction.FLAG_IN_REG_MEM:
-                            this.register[memory[i.addrs[0]]] = memory[memory[i.addrs[1]]];
-
+                            this.memory[register[i.addrs[0]]] = memory[memory[i.addrs[1]]];
                             break;
                         case Instruction.FLAG_IN_MEM_MEM:
                             this.memory[memory[i.addrs[0]]] = memory[memory[i.addrs[1]]];
@@ -289,7 +288,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] + i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] + i.addrs[2];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] + i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] + i.addrs[2];
                         }
@@ -302,7 +301,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] + register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] + register[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] + register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] + register[i.addrs[2]];
                         }
@@ -315,22 +314,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] + memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] + memory[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] + memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] + memory[i.addrs[2]];
                         }
                     } // Add with Reg(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.register[i.addrs[0]] = i.addrs[1] + register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = i.addrs[1] + memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.register[i.addrs[0]] = register[i.addrs[1]] + register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = register[i.addrs[1]] + memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.register[i.addrs[0]] = memory[i.addrs[1]] + register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[i.addrs[1]] + memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] + register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] + memory[register[i.addrs[1]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] + register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] + memory[register[i.addrs[2]]];
                         }
                     } // Add with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM) {
@@ -341,7 +340,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] + memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] + memory[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] + memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] + memory[memory[i.addrs[2]]];
                         }
@@ -355,7 +354,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] + i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] + i.addrs[2];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] + i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] + i.addrs[2];
                         }
@@ -368,7 +367,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] + register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] + register[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] + register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] + register[i.addrs[2]];
                         }
@@ -381,22 +380,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] + memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] + memory[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] + memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] + memory[i.addrs[2]];
                         }
                     } // Add with Reg(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.memory[i.addrs[0]] = i.addrs[1] + register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = i.addrs[1] + memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.memory[i.addrs[0]] = register[i.addrs[1]] + register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = register[i.addrs[1]] + memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.memory[i.addrs[0]] = memory[i.addrs[1]] + register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[i.addrs[1]] + memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] + register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] + memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] + register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] + memory[register[i.addrs[2]]];
                         }
                     } // Add with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM) {
@@ -407,7 +406,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] + memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] + memory[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] + memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] + memory[memory[i.addrs[2]]];
                         }
@@ -426,7 +425,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] - i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] - i.addrs[2];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] - i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] - i.addrs[2];
                         }
@@ -439,7 +438,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] - register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] - register[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] - register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] - register[i.addrs[2]];
                         }
@@ -452,22 +451,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] - memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] - memory[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] - memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] - memory[i.addrs[2]];
                         }
                     } // Sub with Reg(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.register[i.addrs[0]] = i.addrs[1] - register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = i.addrs[1] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.register[i.addrs[0]] = register[i.addrs[1]] - register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = register[i.addrs[1]] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.register[i.addrs[0]] = memory[i.addrs[1]] - register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[i.addrs[1]] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] - register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] - register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] - memory[register[i.addrs[2]]];
                         }
                     } // Sub with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM) {
@@ -478,7 +477,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] - memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] - memory[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] - memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] - memory[memory[i.addrs[2]]];
                         }
@@ -492,7 +491,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] - i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] - i.addrs[2];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] - i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] - i.addrs[2];
                         }
@@ -505,7 +504,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] - register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] - register[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] - register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] - register[i.addrs[2]];
                         }
@@ -518,22 +517,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] - memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] - memory[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] - memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] - memory[i.addrs[2]];
                         }
                     } // Sub with Reg(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.memory[i.addrs[0]] = i.addrs[1] - register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = i.addrs[1] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.memory[i.addrs[0]] = register[i.addrs[1]] - register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = register[i.addrs[1]] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.memory[i.addrs[0]] = memory[i.addrs[1]] - register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[i.addrs[1]] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] - register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] - memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] - register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] - memory[register[i.addrs[2]]];
                         }
                     } // Sub with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM) {
@@ -544,7 +543,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] - memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] - memory[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] - memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] - memory[memory[i.addrs[2]]];
                         }
@@ -562,7 +561,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] * i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] * i.addrs[2];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] * i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] * i.addrs[2];
                         }
@@ -575,7 +574,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] * register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] * register[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] * register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] * register[i.addrs[2]];
                         }
@@ -588,22 +587,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] * memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] * memory[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] * memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] * memory[i.addrs[2]];
                         }
                     } // Mul with Reg(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.register[i.addrs[0]] = i.addrs[1] * register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = i.addrs[1] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.register[i.addrs[0]] = register[i.addrs[1]] * register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = register[i.addrs[1]] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.register[i.addrs[0]] = memory[i.addrs[1]] * register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[i.addrs[1]] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] * register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] * register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] * memory[register[i.addrs[2]]];
                         }
                     } // Mul with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM) {
@@ -614,7 +613,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] * memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] * memory[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] * memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] * memory[memory[i.addrs[2]]];
                         }
@@ -628,7 +627,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] * i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] * i.addrs[2];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] * i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] * i.addrs[2];
                         }
@@ -641,7 +640,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] * register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] * register[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] * register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] * register[i.addrs[2]];
                         }
@@ -654,22 +653,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] * memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] * memory[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] * memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] * memory[i.addrs[2]];
                         }
                     } // Mul with Reg(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.memory[i.addrs[0]] = i.addrs[1] * register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = i.addrs[1] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.memory[i.addrs[0]] = register[i.addrs[1]] * register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = register[i.addrs[1]] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.memory[i.addrs[0]] = memory[i.addrs[1]] * register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[i.addrs[1]] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] * register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] * memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] * register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] * memory[register[i.addrs[2]]];
                         }
                     } // Mul with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM) {
@@ -680,7 +679,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] * memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] * memory[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] * memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] * memory[memory[i.addrs[2]]];
                         }
@@ -699,7 +698,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] / i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] / i.addrs[2];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] / i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] / i.addrs[2];
                         }
@@ -712,7 +711,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] / register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] / register[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] / register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] / register[i.addrs[2]];
                         }
@@ -725,22 +724,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] / memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] / memory[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] / memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] / memory[i.addrs[2]];
                         }
                     } // Div with Reg(Mem) Reference
-                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && register[memory[i.addrs[2]]] != 0) {
+                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && memory[register[i.addrs[2]]] != 0) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.register[i.addrs[0]] = i.addrs[1] / register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = i.addrs[1] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.register[i.addrs[0]] = register[i.addrs[1]] / register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = register[i.addrs[1]] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.register[i.addrs[0]] = memory[i.addrs[1]] / register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[i.addrs[1]] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] / register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] / register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] / memory[register[i.addrs[2]]];
                         }
                     } // Div with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM && memory[memory[i.addrs[2]]] != 0) {
@@ -751,7 +750,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] / memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] / memory[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] / memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] / memory[memory[i.addrs[2]]];
                         }
@@ -767,7 +766,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] / i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] / i.addrs[2];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] / i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] / i.addrs[2];
                         }
@@ -780,7 +779,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] / register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] / register[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] / register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] / register[i.addrs[2]];
                         }
@@ -793,22 +792,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] / memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] / memory[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] / memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] / memory[i.addrs[2]];
                         }
                     } // Div with Reg(Mem) Reference
-                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && register[memory[i.addrs[2]]] != 0) {
+                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && memory[register[i.addrs[2]]] != 0) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.memory[i.addrs[0]] = i.addrs[1] / register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = i.addrs[1] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.memory[i.addrs[0]] = register[i.addrs[1]] / register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = register[i.addrs[1]] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.memory[i.addrs[0]] = memory[i.addrs[1]] / register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[i.addrs[1]] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] / register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] / memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] / register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] / memory[register[i.addrs[2]]];
                         }
                     } // Div with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM && memory[memory[i.addrs[2]]] != 0) {
@@ -819,7 +818,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] / memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] / memory[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] / memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] / memory[memory[i.addrs[2]]];
                         }
@@ -839,7 +838,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] % i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] % i.addrs[2];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] % i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] % i.addrs[2];
                         }
@@ -852,7 +851,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] % register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] % register[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] % register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] % register[i.addrs[2]];
                         }
@@ -865,22 +864,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] % memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] % memory[i.addrs[2]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] % memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] % memory[i.addrs[2]];
                         }
                     } // Mod with Reg(Mem) Reference
-                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && register[memory[i.addrs[2]]] != 0) {
+                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && memory[register[i.addrs[2]]] != 0) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.register[i.addrs[0]] = i.addrs[1] % register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = i.addrs[1] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.register[i.addrs[0]] = register[i.addrs[1]] % register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = register[i.addrs[1]] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.register[i.addrs[0]] = memory[i.addrs[1]] % register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[i.addrs[1]] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] % register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] % register[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] % memory[register[i.addrs[2]]];
                         }
                     } // Mod with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM && memory[memory[i.addrs[2]]] != 0) {
@@ -891,7 +890,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.register[i.addrs[0]] = memory[i.addrs[1]] % memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.register[i.addrs[0]] = register[memory[i.addrs[1]]] % memory[memory[i.addrs[2]]];
+                            this.register[i.addrs[0]] = memory[register[i.addrs[1]]] % memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.register[i.addrs[0]] = memory[memory[i.addrs[1]]] % memory[memory[i.addrs[2]]];
                         }
@@ -905,7 +904,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] % i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] % i.addrs[2];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] % i.addrs[2];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] % i.addrs[2];
                         }
@@ -918,7 +917,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] % register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] % register[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] % register[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] % register[i.addrs[2]];
                         }
@@ -931,22 +930,22 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] % memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] % memory[i.addrs[2]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] % memory[i.addrs[2]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] % memory[i.addrs[2]];
                         }
                     } // Mod with Reg(Mem) Reference
-                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && register[memory[i.addrs[2]]] != 0) {
+                    else if (i.flags[2] == Instruction.FLAG_IN_REG_MEM && memory[register[i.addrs[2]]] != 0) {
                         if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                            this.memory[i.addrs[0]] = i.addrs[1] % register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = i.addrs[1] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                            this.memory[i.addrs[0]] = register[i.addrs[1]] % register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = register[i.addrs[1]] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                            this.memory[i.addrs[0]] = memory[i.addrs[1]] % register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[i.addrs[1]] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] % register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] % memory[register[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] % register[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] % memory[register[i.addrs[2]]];
                         }
                     } // Mod with Mem(Mem) Reference
                     else if (i.flags[2] == Instruction.FLAG_IN_MEM_MEM && memory[memory[i.addrs[2]]] != 0) {
@@ -957,7 +956,7 @@ public class VM extends Thread {
                         } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                             this.memory[i.addrs[0]] = memory[i.addrs[1]] % memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                            this.memory[i.addrs[0]] = register[memory[i.addrs[1]]] % memory[memory[i.addrs[2]]];
+                            this.memory[i.addrs[0]] = memory[register[i.addrs[1]]] % memory[memory[i.addrs[2]]];
                         } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                             this.memory[i.addrs[0]] = memory[memory[i.addrs[1]]] % memory[memory[i.addrs[2]]];
                         }
@@ -974,7 +973,7 @@ public class VM extends Thread {
                         programCounter = i.addrs[2] - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                    if (Objects.equals(register[i.addrs[0]], register[memory[i.addrs[1]]])) {
+                    if (Objects.equals(register[i.addrs[0]], memory[register[i.addrs[1]]])) {
                         programCounter = i.addrs[2] - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
@@ -997,7 +996,7 @@ public class VM extends Thread {
                         programCounter = i.addrs[2] - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                    if (register[i.addrs[0]] > register[memory[i.addrs[1]]]) {
+                    if (register[i.addrs[0]] > memory[register[i.addrs[1]]]) {
                         programCounter = i.addrs[2] - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
@@ -1020,7 +1019,7 @@ public class VM extends Thread {
                         programCounter = i.addrs[2] - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                    if (register[i.addrs[0]] < register[memory[i.addrs[1]]]) {
+                    if (register[i.addrs[0]] < memory[register[i.addrs[1]]]) {
                         programCounter = i.addrs[2] - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {

@@ -97,11 +97,11 @@ public class Instruction {
 	public static final byte OP_RETURN 		= 0x12;                 // Return instruktion
 	
 	//define flags
-	public static final byte FLAG_INVAILD			= -0x1;
+	public static final byte FLAG_INVAILD		= -0x1;
 	public static final byte FLAG_REGISTER          = 0x0;                  //Registerzugriff
 	public static final byte FLAG_DIRECT_MEM        = 0x1;                  //Directer Speicherzugriff
 	public static final byte FLAG_IN_REG_MEM        = 0x2;                  //Indirekter Speicherzugriff mit Register
 	public static final byte FLAG_IN_MEM_MEM        = 0x3;                  //Indirekter Speicherzurgiff mit Speicher
-	public static final byte FLAG_LABEL             = 0x5;                  //FLAG für LABEL für Sprung Adressen
+	public static final byte FLAG_LABEL             = 0x4;                  //FLAG für LABEL für Sprung Adressen
 	public static final byte FLAG_CONSTANT          = 0x6;                  //FLAG für Inhalt ist Constant für Speicher
 }
