@@ -84,7 +84,7 @@ public class Compiler {
             e.printStackTrace();
         }
 
-        Program prog = new Program(registerLabelMap.size(), memoryLabelMap.size());
+        Program prog = new Program(registerLabelMap.size(), 1023);//memoryLabelMap.size());
 
         //Set program entry point
         if (labelMap.containsKey("main") == true) {
@@ -101,12 +101,12 @@ public class Compiler {
             inst.addrs = addressLookup(t, inst.flags);
             inst.setLineIndex(t.getLineNumber());
             inst.setInstructionIndex(t.getInstructionIndex());
-            /*System.out.println("OP | FLG1  | DEST  | FLG2  | SRC1  | FLG2  | SRC2  |");
+            System.out.println("OP | FLG1  | DEST  | FLG2  | SRC1  | FLG2  | SRC2  |");
             System.out.println(
                     inst.op + "  |   " + 
                     inst.flags[0]+ "   |   " + inst.addrs[0] + "   |   " +
                     inst.flags[1]+ "   |   " + inst.addrs[1] + "   |   " +
-                    inst.flags[2]+ "   |   " + inst.addrs[2] );*/
+                    inst.flags[2]+ "   |   " + inst.addrs[2] );
             prog.addInstruction(inst);
         }
 
@@ -211,8 +211,7 @@ public class Compiler {
                 String addr = convertMemoryAddress(t.addrs[0]);
                 if (memoryLabelMap.get(addr) == null) //prüft ob das Pseudonym bekannt ist
                 {
-                    memoryLabelMap.put(addr, memoryLabelIndex); //fügt das Pseudonym ggf hinzu
-                    memoryLabelIndex++;
+                    memoryLabelMap.put(addr, Integer.parseInt(addr)); //fügt das Pseudonym ggf hinzu
                 }
             } else if (t.addrs[0].length() > 3 && t.addrs[0].charAt(2) == 'α')//indirekter Speicherzugriff durch Regsiter
             {
@@ -226,8 +225,7 @@ public class Compiler {
                 String addr = convertMemoryAddress(t.addrs[0]);
                 if (memoryLabelMap.get(addr) == null) //prüft ob das Pseudonym bekannt ist
                 {
-                    memoryLabelMap.put(addr, memoryLabelIndex); //fügt das Pseudonym ggf hinzu
-                    memoryLabelIndex++;
+                    memoryLabelMap.put(addr, Integer.parseInt(addr)); //fügt das Pseudonym ggf hinzu
                 }
             }
         }
@@ -358,6 +356,9 @@ public class Compiler {
                     if (memoryLabelMap.get(convertMemoryAddress(token.addrs[i])) == null) {
                         throw new CompileException(token.getLineNumber(), "Memory has never been initialized!");
                     }
+                    System.out.println(convertMemoryAddress(token.addrs[i]));
+                    System.out.println(memoryLabelMap.get(convertMemoryAddress(token.addrs[i])));
+                    
                     addresses[i] = memoryLabelMap.get(convertMemoryAddress(token.addrs[i]));
                     break;
                 case Instruction.FLAG_CONSTANT:
