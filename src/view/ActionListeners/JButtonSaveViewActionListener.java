@@ -2,10 +2,8 @@ package view.ActionListeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.JFileChooser;
 
@@ -22,16 +20,15 @@ public class JButtonSaveViewActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = new JFileChooser();
 		int returnVal = fc.showSaveDialog(fc);
-		
+
 		File f = new File(fc.getSelectedFile().getPath());
-		try {
-			FileOutputStream os = new FileOutputStream(f);
-			os.write(gui.GetTextSource().getBytes());			
-			os.close();
+		try (OutputStreamWriter writer =
+					 new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8)) {
+			writer.write(gui.GetTextSource());
 		} catch (FileNotFoundException e1) {
-			
-		} catch(IOException e2) {
-			
+
+		} catch (IOException e2) {
+
 		}
 	}
 }
