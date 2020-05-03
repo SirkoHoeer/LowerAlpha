@@ -24,28 +24,10 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
-import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.text.Document;
-import view.ActionListeners.JButtonCompileViewActionListener;
-import view.ActionListeners.JButtonLoadViewActionListener;
-import view.ActionListeners.JButtonNewViewActionListener;
-import view.ActionListeners.JButtonPauseViewActionListener;
-import view.ActionListeners.JButtonPlayViewActionListener;
-import view.ActionListeners.JButtonSaveViewActionListener;
-import view.ActionListeners.JButtonSaveAsViewActionListener;
-import view.ActionListeners.JButtonStepIntoViewActionListener;
-import view.ActionListeners.JButtonStopViewActionListener;
-import view.ActionListeners.JCheckBoxDarkThemeActionListener;
-import view.ActionListeners.JComboBoxLookAndFeelActionListener;
-import view.ActionListeners.JMenuItemAboutViewActionListener;
-import view.ActionListeners.JMenuItemExitViewActionListener;
-import view.ActionListeners.JMenuItemLanguageViewActionListener;
-import view.ActionListeners.JMenuItemLoadViewActionListener;
-import view.ActionListeners.JMenuItemNewViewActionListener;
-import view.ActionListeners.JMenuItemSaveViewActionListener;
-import view.ActionListeners.JMenuItemSaveAsViewActionListener;
-import view.ActionListeners.JSourceViewDocumentListener;
+
+import view.ActionListeners.*;
 import view.translations.ITranslation;
 import view.translations.JTranslationEnglish;
 import view.translations.JTranslationFrench;
@@ -112,18 +94,18 @@ public class JAlphaNotationGUI {
     protected JSeparator MenuSeperator_Load;
 
     protected JMenuItemNewViewActionListener MenuItemNewActionListener;
-    protected JMenuItemSaveViewActionListener MenuItemSaveActionListener;
-    protected JMenuItemSaveAsViewActionListener MenuItemSaveAsActionListener;
-    protected JMenuItemLoadViewActionListener MenuItemLoadActionListener;
+    protected JSaveViewActionListener MenuItemSaveActionListener;
+    protected JSaveAsViewActionListener MenuItemSaveAsActionListener;
+    protected JLoadViewActionListener MenuItemLoadActionListener;
     protected JMenuItemExitViewActionListener MenuItemExitActionListener;
     protected JMenuItemAboutViewActionListener MenuItemAboutActionListener;
     protected JMenuItemLanguageViewActionListener MenuItemLanguageActionListener;
 
     protected JButtonCompileViewActionListener ButtonCompileActionListener;
     protected JButtonNewViewActionListener ButtonNewActionListener;
-    protected JButtonSaveViewActionListener ButtonSaveActionListener;
+    protected JSaveViewActionListener ButtonSaveActionListener;
     protected JButtonSaveAsViewActionListener ButtonSaveAsActionListener;
-    protected JButtonLoadViewActionListener ButtonLoadActionListener;
+    protected JLoadViewActionListener ButtonLoadActionListener;
     protected JButtonPlayViewActionListener ButtonPlayActionListener;
     protected JButtonPauseViewActionListener ButtonPauseActionListener;
     protected JButtonStopViewActionListener ButtonStopActionListener;
@@ -172,6 +154,8 @@ public class JAlphaNotationGUI {
 
     protected JComboBox<String> ComboBoxLookAndFeel;
 
+    private String CurrentFilePath = null;
+
     public static final boolean DEBUG = true;
     public static final boolean ANSI_CONSOLE = true;
 
@@ -182,6 +166,7 @@ public class JAlphaNotationGUI {
     public static final Color NORMAL_THEME_FOREGROUND = Color.BLACK;
 
     public static final Dimension BUTTON_SIZE = new Dimension(42, 42);
+
 
     public JAlphaNotationGUI() {
         this.GUITranslations = new ArrayList<ITranslation>();
@@ -255,8 +240,7 @@ public class JAlphaNotationGUI {
 
     protected void InitMenuItems() {
         this.MenuItemFileNew = new JMenuItem(IGUITranslation.getMenuFileItemNew(), UIManager.getIcon("FileView.fileIcon"));
-        //TODO Menu Item Save
-        //this.MenuItemFileSave = new JMenuItem(IGUITranslation.getMenuFileItemSave(), UIManager.getIcon("FileView.floppyDriveIcon"));
+        this.MenuItemFileSave = new JMenuItem(IGUITranslation.getMenuFileItemSave(), UIManager.getIcon("FileView.floppyDriveIcon"));
         this.MenuItemFileSaveAs = new JMenuItem(IGUITranslation.getMenuFileItemSaveAs(), UIManager.getIcon("FileView.floppyDriveIcon"));
         this.MenuItemFileLoad = new JMenuItem(IGUITranslation.getMenuFileItemLoad(), UIManager.getIcon("FileView.hardDriveIcon"));
         this.MenuItemFileExit = new JMenuItem(IGUITranslation.getMenuFileItemExit(), UIManager.getIcon("FileChooser.homeFolderIcon"));
@@ -330,18 +314,18 @@ public class JAlphaNotationGUI {
 
     protected void InitListeners() {
         this.MenuItemNewActionListener = new JMenuItemNewViewActionListener(this);
-        this.MenuItemSaveActionListener = new JMenuItemSaveViewActionListener(this);
-        this.MenuItemSaveAsActionListener = new JMenuItemSaveAsViewActionListener(this);
-        this.MenuItemLoadActionListener = new JMenuItemLoadViewActionListener(this);
+        this.MenuItemSaveActionListener = new JSaveViewActionListener(this);
+        this.MenuItemSaveAsActionListener = new JSaveAsViewActionListener(this);
+        this.MenuItemLoadActionListener = new JLoadViewActionListener(this);
         this.MenuItemExitActionListener = new JMenuItemExitViewActionListener(this);
         this.MenuItemAboutActionListener = new JMenuItemAboutViewActionListener(this);
         this.MenuItemLanguageActionListener = new JMenuItemLanguageViewActionListener(this);
 
         this.ButtonCompileActionListener = new JButtonCompileViewActionListener(this);
         this.ButtonNewActionListener = new JButtonNewViewActionListener(this);
-        this.ButtonSaveActionListener = new JButtonSaveViewActionListener(this);
+        this.ButtonSaveActionListener = new JSaveViewActionListener(this);
         this.ButtonSaveAsActionListener = new JButtonSaveAsViewActionListener(this);
-        this.ButtonLoadActionListener = new JButtonLoadViewActionListener(this);
+        this.ButtonLoadActionListener = new JLoadViewActionListener(this);
         this.ButtonPlayActionListener = new JButtonPlayViewActionListener(this);
         this.ButtonPauseActionListener = new JButtonPauseViewActionListener(this);
         this.ButtonStopActionListener = new JButtonStopViewActionListener(this);
@@ -356,8 +340,7 @@ public class JAlphaNotationGUI {
 
     protected void AddListeners() {
         this.MenuItemFileNew.addActionListener(MenuItemNewActionListener);
-        //TODO MenuItem 
-        //this.MenuItemFileSave.addActionListener(MenuItemSaveActionListener);
+        this.MenuItemFileSave.addActionListener(MenuItemSaveActionListener);
         this.MenuItemFileSaveAs.addActionListener(MenuItemSaveAsActionListener);
         this.MenuItemFileLoad.addActionListener(MenuItemLoadActionListener);
         this.MenuItemFileExit.addActionListener(MenuItemExitActionListener);
@@ -716,8 +699,7 @@ public class JAlphaNotationGUI {
 
         this.MenuFile.setText(translation.getMenuFile());
         this.MenuItemFileNew.setText(translation.getMenuFileItemNew());
-        //TODO: File Save Menu Item disabled
-        //this.MenuItemFileSave.setText(translation.getMenuFileItemSave());
+        this.MenuItemFileSave.setText(translation.getMenuFileItemSave());
         this.MenuItemFileSaveAs.setText(translation.getMenuFileItemSaveAs());
         this.MenuItemFileLoad.setText(translation.getMenuFileItemLoad());
         this.MenuItemFileExit.setText(translation.getMenuFileItemExit());
@@ -1248,27 +1230,27 @@ public class JAlphaNotationGUI {
         MenuItemNewActionListener = menuItemNewActionListener;
     }
 
-    public JMenuItemSaveViewActionListener getMenuItemSaveActionListener() {
+    public JSaveViewActionListener getMenuItemSaveActionListener() {
         return MenuItemSaveActionListener;
     }
 
-    public void setMenuItemSaveActionListener(JMenuItemSaveViewActionListener menuItemSaveActionListener) {
+    public void setMenuItemSaveActionListener(JSaveViewActionListener menuItemSaveActionListener) {
         MenuItemSaveActionListener = menuItemSaveActionListener;
     }
 
-    public JMenuItemSaveAsViewActionListener getMenuItemSaveAsActionListener() {
+    public JSaveAsViewActionListener getMenuItemSaveAsActionListener() {
         return MenuItemSaveAsActionListener;
     }
 
-    public void setMenuItemSaveAsActionListener(JMenuItemSaveAsViewActionListener menuItemSaveAsActionListener) {
+    public void setMenuItemSaveAsActionListener(JSaveAsViewActionListener menuItemSaveAsActionListener) {
         MenuItemSaveAsActionListener = menuItemSaveAsActionListener;
     }
 
-    public JMenuItemLoadViewActionListener getMenuItemLoadActionListener() {
+    public JLoadViewActionListener getMenuItemLoadActionListener() {
         return MenuItemLoadActionListener;
     }
 
-    public void setMenuItemLoadActionListener(JMenuItemLoadViewActionListener menuItemLoadActionListener) {
+    public void setMenuItemLoadActionListener(JLoadViewActionListener menuItemLoadActionListener) {
         MenuItemLoadActionListener = menuItemLoadActionListener;
     }
 
@@ -1304,11 +1286,11 @@ public class JAlphaNotationGUI {
         ButtonNewActionListener = buttonNewActionListener;
     }
 
-    public JButtonSaveViewActionListener getButtonSaveActionListener() {
+    public JSaveViewActionListener getButtonSaveActionListener() {
         return ButtonSaveActionListener;
     }
 
-    public void setButtonSaveActionListener(JButtonSaveViewActionListener buttonSaveActionListener) {
+    public void setButtonSaveActionListener(JSaveViewActionListener buttonSaveActionListener) {
         ButtonSaveActionListener = buttonSaveActionListener;
     }
 
@@ -1320,11 +1302,11 @@ public class JAlphaNotationGUI {
         ButtonSaveAsActionListener = buttonSaveAsActionListener;
     }
 
-    public JButtonLoadViewActionListener getButtonLoadActionListener() {
+    public JLoadViewActionListener getButtonLoadActionListener() {
         return ButtonLoadActionListener;
     }
 
-    public void setButtonLoadActionListener(JButtonLoadViewActionListener buttonLoadActionListener) {
+    public void setButtonLoadActionListener(JLoadViewActionListener buttonLoadActionListener) {
         ButtonLoadActionListener = buttonLoadActionListener;
     }
 
@@ -1698,6 +1680,14 @@ public class JAlphaNotationGUI {
 
     public static Color getNormalThemeForeground() {
         return NORMAL_THEME_FOREGROUND;
+    }
+
+    public String GetCurrentFilePath() {
+        return CurrentFilePath;
+    }
+
+    public void SetCurrentFilePath(String currentFilePath){
+        CurrentFilePath = currentFilePath;
     }
 
 }
