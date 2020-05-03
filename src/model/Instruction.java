@@ -7,12 +7,12 @@ public class Instruction {
 	public Instruction()
 	{
 		flags = new int[3];
-		addrs = new int[3];
+		addrs = new String[3];
 	}
 	        
 	public byte op;
 	public int flags[];
-	public int addrs[];
+	public String[] addrs;
 	private int lineIndex;
 	private int instructionIndex;
 	private boolean breakPoint;

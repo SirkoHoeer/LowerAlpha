@@ -55,7 +55,7 @@ public class JButtonCompileControllerActionListener implements ActionListener {
 
             int counter = 0;
             for (Map.Entry<String, Integer> entry : this.model.getMemoryLabelMap().entrySet()) {
-                memory[counter] = "ρ(" + entry.getKey().toString() + ") := " + this.model.getMemory()[entry.getValue()];
+                memory[counter] = "ρ(" + entry.getKey().toString() + ") := " + this.model.getMemory().get(entry.getKey());
                 counter++;
             }
 

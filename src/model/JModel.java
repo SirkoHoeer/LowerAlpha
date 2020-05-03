@@ -43,7 +43,7 @@ public class JModel {
 		return this.compiler.getMemoryLabelMap();
 	}	
 	
-	public Integer[] getMemory() {
+	public HashMap<String, Integer> getMemory() {
         return this.vm.getMemory();
     }
 
