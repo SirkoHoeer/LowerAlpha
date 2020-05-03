@@ -259,8 +259,7 @@ public class JAlphaNotationGUI {
     protected void AddMenuItems() {
         this.MenuFile.add(MenuItemFileNew);
         this.MenuFile.add(MenuSeperator_New);
-        //TODO Menu Item Save
-        //this.MenuFile.add(MenuItemFileSave);
+        this.MenuFile.add(MenuItemFileSave);
         this.MenuFile.add(MenuItemFileSaveAs);
         this.MenuFile.add(MenuSeperator_Save);
         this.MenuFile.add(MenuItemFileLoad);
