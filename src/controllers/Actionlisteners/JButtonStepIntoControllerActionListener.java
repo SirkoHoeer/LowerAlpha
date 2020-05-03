@@ -36,7 +36,7 @@ public class JButtonStepIntoControllerActionListener implements ActionListener {
 		int counter = 0;
 		for (Entry<String, Integer> entry : this.model.getMemoryLabelMap().entrySet()) {
 			memory[counter] = "ρ(" + entry.getKey().toString() + ") := "
-					+ this.model.getMemory()[entry.getValue()];
+					+ this.model.getMemory().get(String.valueOf(entry.getValue()));
 			counter++;
 		}
 
