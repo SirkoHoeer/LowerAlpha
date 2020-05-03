@@ -225,7 +225,12 @@ public class Compiler {
                 String addr = convertMemoryAddress(t.addrs[0]);
                 if (memoryLabelMap.get(addr) == null) //prüft ob das Pseudonym bekannt ist
                 {
-                    memoryLabelMap.put(addr, Integer.parseInt(addr)); //fügt das Pseudonym ggf hinzu
+                    try {
+                        memoryLabelMap.put(addr, Integer.parseInt(addr)); //fügt das Pseudonym ggf hinzu
+                    }
+                    catch(NumberFormatException e){
+                        memoryLabelMap.put(addr, addr.hashCode()); //fügt das Pseudonym ggf hinzu
+                    }
                 }
             }
         }
