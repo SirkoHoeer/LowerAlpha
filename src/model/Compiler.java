@@ -2,14 +2,15 @@ package model;
 
 import model.CompileException;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.*;
 
 public class Compiler {
 
-    private Pattern labelRegExp;
-    private Pattern constRegExp;
-    private ArrayList<Pattern> syntaxRegExp;
+    private final Pattern labelRegExp;
+    private final Pattern constRegExp;
+    private final ArrayList<Pattern> syntaxRegExp;
 
     private HashMap<String, Integer> labelMap;
 
@@ -38,7 +39,7 @@ public class Compiler {
     }
 
     public void load(InputStream is) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         String line;
         while ((line = br.readLine()) != null) {
             //Abfrage ob aktuelle Zeile ein Kommentar ist
@@ -146,7 +147,7 @@ public class Compiler {
             String label = line.substring(0, labelIndex + 1);
             Matcher m = labelRegExp.matcher(label);
             if (m.matches()) {
-                line = line.substring(labelIndex + 1, line.length());
+                line = line.substring(labelIndex + 1);
                 if (line.length() <= 0) {
                     throw new CompileException(lineIndex, "Missing expression after Label!");
                 } else if (labelMap.get(label) != null) {
@@ -300,7 +301,7 @@ public class Compiler {
 
     private int[] encodeFlag(Token t) {
         int flagIndex = 0;
-        int flags[] = new int[3];
+        int[] flags = new int[3];
         flags[0] = Instruction.FLAG_INVAILD;
         flags[1] = Instruction.FLAG_INVAILD;
         flags[2] = Instruction.FLAG_INVAILD;
@@ -335,8 +336,8 @@ public class Compiler {
         return flags;
     }
 
-    private int[] addressLookup(Token token, int flags[]) {
-        int addresses[] = new int[3];
+    private int[] addressLookup(Token token, int[] flags) {
+        int[] addresses = new int[3];
         for (int i = 0; i < 3; i++) {
             switch (flags[i]) {
                 case Instruction.FLAG_REGISTER:
