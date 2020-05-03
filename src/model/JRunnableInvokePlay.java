@@ -28,7 +28,7 @@ public class JRunnableInvokePlay implements Runnable {
 			int counter = 0;
 			for (Entry<String, Integer> entry : this.model.getMemoryLabelMap().entrySet()) {
 				memory[counter] = "ρ(" + entry.getKey().toString() + ") := "
-						+ this.model.getMemory().get(String.valueOf(entry.getValue()));
+						+ this.model.getMemory().get(entry.getKey());
 				counter++;
 			}
 

@@ -336,27 +336,27 @@ public class Compiler {
         return flags;
     }
 
-    private int[] addressLookup(Token token, int[] flags) {
-        int[] addresses = new int[3];
+    private String[] addressLookup(Token token, int[] flags) {
+        String[] addresses = new String[3];
         for (int i = 0; i < 3; i++) {
             switch (flags[i]) {
                 case Instruction.FLAG_REGISTER:
                     if (registerLabelMap.get(token.addrs[i]) == null) {
                         throw new CompileException(token.getLineNumber(), "Register has never been initialized!");
                     }
-                    addresses[i] = registerLabelMap.get(token.addrs[i]);
+                    addresses[i] = String.valueOf(registerLabelMap.get(token.addrs[i]));
                     break;
                 case Instruction.FLAG_IN_MEM_MEM:
                     if (memoryLabelMap.get(convertMemoryAddress(token.addrs[i])) == null) {
                         throw new CompileException(token.getLineNumber(), "Memory has never been initialized!");
                     }
-                    addresses[i] = memoryLabelMap.get(convertMemoryAddress(token.addrs[i]));
+                    addresses[i] = convertMemoryAddress(token.addrs[i]);
                     break;
                 case Instruction.FLAG_IN_REG_MEM:
                     if (registerLabelMap.get(convertMemoryAddress(token.addrs[i])) == null) {
                         throw new CompileException(token.getLineNumber(), "Register has never been initialized!");
                     }
-                    addresses[i] = registerLabelMap.get(convertMemoryAddress(token.addrs[i]));
+                    addresses[i] = String.valueOf(registerLabelMap.get(convertMemoryAddress(token.addrs[i])));
                     break;
                 case Instruction.FLAG_DIRECT_MEM:
                     if (memoryLabelMap.get(convertMemoryAddress(token.addrs[i])) == null) {
@@ -365,16 +365,16 @@ public class Compiler {
                     System.out.println(convertMemoryAddress(token.addrs[i]));
                     System.out.println(memoryLabelMap.get(convertMemoryAddress(token.addrs[i])));
                     
-                    addresses[i] = memoryLabelMap.get(convertMemoryAddress(token.addrs[i]));
+                    addresses[i] = convertMemoryAddress(token.addrs[i]);
                     break;
                 case Instruction.FLAG_CONSTANT:
-                    addresses[i] = Integer.parseInt(token.addrs[i]);
+                    addresses[i] = token.addrs[i];
                     break;
                 case Instruction.FLAG_LABEL:
                     if (labelMap.get(token.addrs[i]) == null) {
                         throw new CompileException(token.getLineNumber(), "Undefined Label!");
                     }
-                    addresses[i] = labelMap.get(token.addrs[i]);
+                    addresses[i] = token.addrs[i];
                     break;
                 default:
                     break;

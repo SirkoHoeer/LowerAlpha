@@ -171,19 +171,19 @@ public class VM extends Thread {
         for (int j = 1; j <= 2; j++) {
             switch (i.flags[j]) {
                 case Instruction.FLAG_CONSTANT:
-                    value[j - 1] = i.addrs[j];
+                    value[j - 1] = Integer.parseInt(i.addrs[j]);
                     break;
                 case Instruction.FLAG_REGISTER:
-                    value[j - 1] = register[i.addrs[1]];
+                    value[j - 1] = register[Integer.parseInt(i.addrs[j])];
                     break;
                 case Instruction.FLAG_DIRECT_MEM:
                     value[j - 1] = memory.get(String.valueOf(i.addrs[j]));
                     break;
                 case Instruction.FLAG_IN_REG_MEM:
-                    value[j - 1] = memory.get(String.valueOf(register[i.addrs[0]]));
+                    value[j - 1] = memory.get(String.valueOf(register[Integer.parseInt(i.addrs[j])]));
                     break;
                 case Instruction.FLAG_IN_MEM_MEM:
-                    value[j - 1] = memory.get(String.valueOf(memory.get(String.valueOf(register[i.addrs[0]]))));
+                    value[j - 1] = memory.get(String.valueOf(memory.get(String.valueOf(i.addrs[j]))));
                     break;
                 default:
                     break;
@@ -191,9 +191,9 @@ public class VM extends Thread {
         }
         int sum = op.op(value[0], value[1]);
         if (i.flags[0] == Instruction.FLAG_REGISTER) {
-            this.register[i.addrs[0]] = sum;
+            this.register[Integer.parseInt(i.addrs[0])] = sum;
         } else if (i.flags[0] == Instruction.FLAG_DIRECT_MEM) {
-            this.memory.put(String.valueOf(i.addrs[0]), sum);
+            this.memory.put(i.addrs[0], sum);
         }
     }
 
@@ -201,7 +201,7 @@ public class VM extends Thread {
         switch (i.flags[1]) {
             case Instruction.FLAG_REGISTER:
                 try {
-                    this.proof = register[i.addrs[1]];
+                    this.proof = register[Integer.parseInt(i.addrs[1])];
                 } catch (Exception e) {
                     System.out.println("model.VM.workingInstraktion(1)");
                     this.restart();
@@ -227,28 +227,28 @@ public class VM extends Thread {
             case Instruction.OP_STORE: {
                 int value = 0;
                 if (i.flags[1] == Instruction.FLAG_CONSTANT) {
-                    value = i.addrs[1];
+                    value = Integer.parseInt(i.addrs[1]);
                 } else if (i.flags[1] == Instruction.FLAG_REGISTER) {
-                    value = register[i.addrs[1]];
+                    value = register[Integer.parseInt(i.addrs[1])];
                 } else if (i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
                     value = memory.get(String.valueOf(i.addrs[1]));
                 } else if (i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                    value = memory.get(String.valueOf(register[i.addrs[1]]));
+                    value = memory.get(String.valueOf(register[Integer.parseInt(i.addrs[1])]));
                 } else if (i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
                     value = memory.get(String.valueOf(memory.get(String.valueOf(i.addrs[1]))));
                 }
                 switch (i.flags[0]) {
                     case Instruction.FLAG_REGISTER:
-                        this.register[i.addrs[0]] = value;
+                        this.register[Integer.parseInt(i.addrs[0])] = value;
                         break;
                     case Instruction.FLAG_DIRECT_MEM:
                         this.memory.put(String.valueOf(i.addrs[0]), value);
                         break;
                     case Instruction.FLAG_IN_REG_MEM:
-                        this.memory.put(String.valueOf(register[i.addrs[0]]), value);
+                        this.memory.put(String.valueOf(register[Integer.parseInt(i.addrs[0])]), value);
                         break;
                     case Instruction.FLAG_IN_MEM_MEM:
-                        this.memory.put(String.valueOf(memory.get(String.valueOf(register[i.addrs[0]]))), value);
+                        this.memory.put(String.valueOf(memory.get(String.valueOf(register[Integer.parseInt(i.addrs[0])]))), value);
                         break;
                     default:
                         break;
@@ -257,89 +257,94 @@ public class VM extends Thread {
             }
             case Instruction.OP_ADD: {
                 performArithmetic(i, Integer::sum);
+                break;
             }
             case Instruction.OP_SUB: {
                 performArithmetic(i, (a, b) -> a - b);
+                break;
             }
             case Instruction.OP_MUL: {
                 performArithmetic(i, (a, b) -> a * b);
+                break;
             }
             case Instruction.OP_DIV: {
                 performArithmetic(i, (a, b) -> a / b);
+                break;
             }
             case Instruction.OP_MOD:
                 performArithmetic(i, (a, b) -> a % b);
+                break;
             case Instruction.OP_IF_EQ:
                 if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_CONSTANT) {
-                    if (register[i.addrs[0]] == i.addrs[1]) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] == Integer.parseInt(i.addrs[1])) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_REGISTER) {
-                    if (Objects.equals(register[i.addrs[0]], register[i.addrs[1]])) {
-                        programCounter = i.addrs[2] - 1;
+                    if (Objects.equals(register[Integer.parseInt(i.addrs[0])], register[Integer.parseInt(i.addrs[1])])) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                    if (Objects.equals(register[i.addrs[0]], memory.get(String.valueOf(register[i.addrs[1]])))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (Objects.equals(register[Integer.parseInt(i.addrs[0])], memory.get(String.valueOf(register[Integer.parseInt(i.addrs[1])])))) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                    if (Objects.equals(register[i.addrs[0]], memory.get(String.valueOf(memory.get(String.valueOf(register[i.addrs[1]])))))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (Objects.equals(register[Integer.parseInt(i.addrs[0])], memory.get(String.valueOf(memory.get(String.valueOf(register[Integer.parseInt(i.addrs[1])])))))) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                    if (Objects.equals(register[i.addrs[0]], memory.get(String.valueOf(register[i.addrs[1]])))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (Objects.equals(register[Integer.parseInt(i.addrs[0])], memory.get(i.addrs[1]))) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 }
                 break;
             case Instruction.OP_IF_G:
                 if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_CONSTANT) {
-                    if (register[i.addrs[0]] > i.addrs[1]) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] >  Integer.parseInt(i.addrs[1])) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_REGISTER) {
-                    if (register[i.addrs[0]] > register[i.addrs[1]]) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] > register[Integer.parseInt(i.addrs[1])]) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                    if (register[i.addrs[0]] > memory.get(String.valueOf(register[i.addrs[1]]))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] > memory.get(String.valueOf(register[Integer.parseInt(i.addrs[1])]))) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                    if (register[i.addrs[0]] > memory.get(String.valueOf(memory.get(String.valueOf(register[i.addrs[1]]))))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] > memory.get(String.valueOf(memory.get(i.addrs[1])))) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                    if (register[i.addrs[0]] > memory.get(String.valueOf(register[i.addrs[1]]))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] >  memory.get(i.addrs[1])) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 }
                 break;
             case Instruction.OP_IF_L:
                 if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_CONSTANT) {
-                    if (register[i.addrs[0]] < i.addrs[1]) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] <  Integer.parseInt(i.addrs[1])) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_REGISTER) {
-                    if (register[i.addrs[0]] < register[i.addrs[1]]) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] < register[Integer.parseInt(i.addrs[1])]) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_REG_MEM) {
-                    if (register[i.addrs[0]] < memory.get(String.valueOf(register[i.addrs[1]]))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] < memory.get(String.valueOf(register[Integer.parseInt(i.addrs[1])]))) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_IN_MEM_MEM) {
-                    if (register[i.addrs[0]] < memory.get(String.valueOf(memory.get(String.valueOf(register[i.addrs[1]]))))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] < memory.get(String.valueOf(memory.get(i.addrs[1])))) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 } else if (i.flags[0] == Instruction.FLAG_REGISTER && i.flags[1] == Instruction.FLAG_DIRECT_MEM) {
-                    if (register[i.addrs[0]] < memory.get(String.valueOf(register[i.addrs[1]]))) {
-                        programCounter = i.addrs[2] - 1;
+                    if (register[Integer.parseInt(i.addrs[0])] < memory.get(i.addrs[1])) {
+                        programCounter = Integer.parseInt(i.addrs[2]) - 1;
                     }
                 }
                 break;
             case Instruction.OP_GOTO:
-                this.programCounter = (i.addrs[0] - 1);
+                this.programCounter = (Integer.parseInt(i.addrs[0]) - 1);
                 break;
             case Instruction.OP_PUSH:
                 stack.push(register[0]);
@@ -383,7 +388,7 @@ public class VM extends Thread {
                 break;
             case Instruction.OP_CALL:
                 this.callStack.push(programCounter);
-                this.programCounter = (i.addrs[0] - 1);
+                this.programCounter = ( Integer.parseInt(i.addrs[0]) - 1);
                 break;
             case Instruction.OP_RETURN:
                 if (this.callStack.empty()) {
