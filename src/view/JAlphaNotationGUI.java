@@ -104,7 +104,7 @@ public class JAlphaNotationGUI {
     protected JButtonCompileViewActionListener ButtonCompileActionListener;
     protected JButtonNewViewActionListener ButtonNewActionListener;
     protected JSaveViewActionListener ButtonSaveActionListener;
-    protected JButtonSaveAsViewActionListener ButtonSaveAsActionListener;
+    protected JSaveAsViewActionListener ButtonSaveAsActionListener;
     protected JLoadViewActionListener ButtonLoadActionListener;
     protected JButtonPlayViewActionListener ButtonPlayActionListener;
     protected JButtonPauseViewActionListener ButtonPauseActionListener;
@@ -323,7 +323,7 @@ public class JAlphaNotationGUI {
         this.ButtonCompileActionListener = new JButtonCompileViewActionListener(this);
         this.ButtonNewActionListener = new JButtonNewViewActionListener(this);
         this.ButtonSaveActionListener = new JSaveViewActionListener(this);
-        this.ButtonSaveAsActionListener = new JButtonSaveAsViewActionListener(this);
+        this.ButtonSaveAsActionListener = new JSaveAsViewActionListener(this);
         this.ButtonLoadActionListener = new JLoadViewActionListener(this);
         this.ButtonPlayActionListener = new JButtonPlayViewActionListener(this);
         this.ButtonPauseActionListener = new JButtonPauseViewActionListener(this);
@@ -1293,11 +1293,11 @@ public class JAlphaNotationGUI {
         ButtonSaveActionListener = buttonSaveActionListener;
     }
 
-    public JButtonSaveAsViewActionListener getButtonSaveAsActionListener() {
+    public JSaveAsViewActionListener getButtonSaveAsActionListener() {
         return ButtonSaveAsActionListener;
     }
 
-    public void setButtonSaveAsActionListener(JButtonSaveAsViewActionListener buttonSaveAsActionListener) {
+    public void setButtonSaveAsActionListener(JSaveAsViewActionListener buttonSaveAsActionListener) {
         ButtonSaveAsActionListener = buttonSaveAsActionListener;
     }
 
