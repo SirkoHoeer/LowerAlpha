@@ -371,10 +371,11 @@ public class Compiler {
                     addresses[i] = token.addrs[i];
                     break;
                 case Instruction.FLAG_LABEL:
-                    if (labelMap.get(token.addrs[i]) == null) {
+                    Integer labelAddr = labelMap.get(token.addrs[i]);
+                    if (labelAddr == null) {
                         throw new CompileException(token.getLineNumber(), "Undefined Label!");
                     }
-                    addresses[i] = token.addrs[i];
+                    addresses[i] = labelAddr.toString();
                     break;
                 default:
                     break;
