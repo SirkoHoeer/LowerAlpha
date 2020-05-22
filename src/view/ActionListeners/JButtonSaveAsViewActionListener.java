@@ -9,11 +9,11 @@ import javax.swing.JFileChooser;
 
 import view.JAlphaNotationGUI;
 
-public class JSaveAsViewActionListener implements ActionListener {
+public class JButtonSaveAsViewActionListener implements ActionListener {
 
     private JAlphaNotationGUI gui;
 
-    public JSaveAsViewActionListener(JAlphaNotationGUI gui) {
+    public JButtonSaveAsViewActionListener(JAlphaNotationGUI gui) {
         this.gui = gui;
     }
 

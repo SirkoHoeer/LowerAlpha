@@ -95,7 +95,7 @@ public class JAlphaNotationGUI {
 
     protected JMenuItemNewViewActionListener MenuItemNewActionListener;
     protected JSaveViewActionListener MenuItemSaveActionListener;
-    protected JSaveAsViewActionListener MenuItemSaveAsActionListener;
+    protected JButtonSaveAsViewActionListener MenuItemSaveAsActionListener;
     protected JLoadViewActionListener MenuItemLoadActionListener;
     protected JMenuItemExitViewActionListener MenuItemExitActionListener;
     protected JMenuItemAboutViewActionListener MenuItemAboutActionListener;
@@ -314,7 +314,7 @@ public class JAlphaNotationGUI {
     protected void InitListeners() {
         this.MenuItemNewActionListener = new JMenuItemNewViewActionListener(this);
         this.MenuItemSaveActionListener = new JSaveViewActionListener(this);
-        this.MenuItemSaveAsActionListener = new JSaveAsViewActionListener(this);
+        this.MenuItemSaveAsActionListener = new JButtonSaveAsViewActionListener(this);
         this.MenuItemLoadActionListener = new JLoadViewActionListener(this);
         this.MenuItemExitActionListener = new JMenuItemExitViewActionListener(this);
         this.MenuItemAboutActionListener = new JMenuItemAboutViewActionListener(this);
@@ -1237,11 +1237,11 @@ public class JAlphaNotationGUI {
         MenuItemSaveActionListener = menuItemSaveActionListener;
     }
 
-    public JSaveAsViewActionListener getMenuItemSaveAsActionListener() {
+    public JButtonSaveAsViewActionListener getMenuItemSaveAsActionListener() {
         return MenuItemSaveAsActionListener;
     }
 
-    public void setMenuItemSaveAsActionListener(JSaveAsViewActionListener menuItemSaveAsActionListener) {
+    public void setMenuItemSaveAsActionListener(JButtonSaveAsViewActionListener menuItemSaveAsActionListener) {
         MenuItemSaveAsActionListener = menuItemSaveAsActionListener;
     }
 
