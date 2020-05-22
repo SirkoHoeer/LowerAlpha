@@ -1,9 +1,6 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
@@ -442,7 +439,8 @@ public class JAlphaNotationGUI {
         this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextAreaSource);
 
         //TODO Translation and Interface Update for languages
-        this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneDebugRuntime(), this.ListRuntimeDebug);
+        JScrollPane listRuntimeDebugScrollPane = new JScrollPane(this.ListRuntimeDebug);
+        this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneDebugRuntime(), listRuntimeDebugScrollPane);
 
         //this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextSource);
         this.MainDownTabbedPane.addTab(IGUITranslation.getMainDownTabbedPaneConsole(), this.ScrollPaneTextAreaConsole);
