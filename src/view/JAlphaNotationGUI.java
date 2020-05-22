@@ -1,40 +1,15 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import view.ActionListeners.*;
+import view.translations.*;
+
+import javax.swing.*;
+import javax.swing.text.Document;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import javax.swing.text.Document;
-
-import view.ActionListeners.*;
-import view.translations.ITranslation;
-import view.translations.JTranslationEnglish;
-import view.translations.JTranslationFrench;
-import view.translations.JTranslationGerman;
-import view.translations.JTranslationJapanese;
-import view.translations.JTranslationPolish;
-import view.translations.JTranslationRussian;
 
 public class JAlphaNotationGUI {
 
@@ -134,9 +109,8 @@ public class JAlphaNotationGUI {
     protected Icon IconSave;
     protected Icon IconLoad;
 
-    //TODO might change the source jtextarea to jeditorpane
-    protected JTextArea TextAreaSource;
-    protected JTextArea TextAreaConsole;
+    protected JEditorPane TextAreaSource;
+    protected JEditorPane TextAreaConsole;
 
     protected JScrollPane ScrollPaneTextAreaSource;
     protected JScrollPane ScrollPaneTextAreaConsole;
@@ -370,8 +344,10 @@ public class JAlphaNotationGUI {
     }
 
     protected void InitTextArea() {
-        this.TextAreaSource = new JTextArea(10, 10);
-        this.TextAreaConsole = new JTextArea(10, 10);
+        this.TextAreaSource = new JEditorPane();
+        this.TextAreaConsole = new JEditorPane();
+        TextAreaSource.setFont(new Font("Courier New", 0, 14));
+        TextAreaConsole.setFont(new Font("Courier New", 0, 14));
 
         //this.TextAreaSource.setBackground(Color.BLACK);
     }
@@ -1405,19 +1381,19 @@ public class JAlphaNotationGUI {
         ButtonStepInto = buttonStepInto;
     }
 
-    public JTextArea getTextAreaSource() {
+    public JEditorPane getTextAreaSource() {
         return TextAreaSource;
     }
 
-    public void setTextAreaSource(JTextArea textAreaSource) {
+    public void setTextAreaSource(JEditorPane textAreaSource) {
         TextAreaSource = textAreaSource;
     }
 
-    public JTextArea getTextAreaConsole() {
+    public JEditorPane getTextAreaConsole() {
         return TextAreaConsole;
     }
 
-    public void setTextAreaConsole(JTextArea textAreaConsole) {
+    public void setTextAreaConsole(JEditorPane textAreaConsole) {
         TextAreaConsole = textAreaConsole;
     }
 
@@ -1685,7 +1661,7 @@ public class JAlphaNotationGUI {
         return CurrentFilePath;
     }
 
-    public void SetCurrentFilePath(String currentFilePath){
+    public void SetCurrentFilePath(String currentFilePath) {
         CurrentFilePath = currentFilePath;
     }
 
