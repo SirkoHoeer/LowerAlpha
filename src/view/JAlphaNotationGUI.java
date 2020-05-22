@@ -401,6 +401,7 @@ public class JAlphaNotationGUI {
     public void SetListRuntimeDebug(String[] source, int selected) {
         this.ListRuntimeDebug.setListData(source);
         this.ListRuntimeDebug.setSelectedIndex(selected);
+        this.ListRuntimeDebug.ensureIndexIsVisible(selected);
     }
 
     protected void InitTabbedPane() {
@@ -419,7 +420,9 @@ public class JAlphaNotationGUI {
         this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextAreaSource);
 
         //TODO Translation and Interface Update for languages
-        this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneDebugRuntime(), this.ListRuntimeDebug);
+        JScrollPane listRuntimeDebugScrollPane = new JScrollPane();
+        listRuntimeDebugScrollPane.setViewportView(this.ListRuntimeDebug);
+        this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneDebugRuntime(), listRuntimeDebugScrollPane);
 
         //this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextSource);
         this.MainDownTabbedPane.addTab(IGUITranslation.getMainDownTabbedPaneConsole(), this.ScrollPaneTextAreaConsole);
