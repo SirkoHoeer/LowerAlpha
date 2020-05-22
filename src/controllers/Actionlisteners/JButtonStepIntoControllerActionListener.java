@@ -27,7 +27,7 @@ public class JButtonStepIntoControllerActionListener implements ActionListener {
 			System.out.println("Button Step-Into has been clicked. controller");
 		}
 		model.Step();
-		// gui.SetListMemorey(model.getMemory());
+		// gui.SetListMemory(model.getMemory());
 		// gui.SetListRegister(model.getRegister());
 
 		String[] memory = new String[this.model.getMemoryLabelMap().size()];
@@ -35,14 +35,14 @@ public class JButtonStepIntoControllerActionListener implements ActionListener {
 
 		int counter = 0;
 		for (Entry<String, Integer> entry : this.model.getMemoryLabelMap().entrySet()) {
-			memory[counter] = "ρ(" + entry.getKey().toString() + ") := "
-					+ this.model.getMemory().get(String.valueOf(entry.getValue()));
+			memory[counter] = "ρ(" + entry.getKey() + ") := "
+					+ this.model.getMemory().get(entry.getKey());
 			counter++;
 		}
 
 		counter = 0;
 		for (Entry<String, Integer> entry : this.model.getRegisterLabelMap().entrySet()) {
-			register[counter] = entry.getKey().toString() + " := "
+			register[counter] = entry.getKey() + " := "
 					+ this.model.getRegister()[entry.getValue()];
 			counter++;
 		}
@@ -79,7 +79,7 @@ public class JButtonStepIntoControllerActionListener implements ActionListener {
 		
 		
 		gui.SetListStack(sStack);
-		gui.SetListMemorey(memory);
+		gui.SetListMemory(memory);
 		gui.SetListRegister(register);
 		//gui.SetListRuntimeDebug(arrSource, pc);
 		gui.SetListRuntimeDebug(arrSource, ln);

@@ -115,9 +115,8 @@ public class JAlphaNotationGUI {
     protected Icon IconSave;
     protected Icon IconLoad;
 
-    //TODO might change the source jtextarea to jeditorpane
-    protected JTextArea TextAreaSource;
-    protected JTextArea TextAreaConsole;
+    protected JEditorPane TextAreaSource;
+    protected JEditorPane TextAreaConsole;
 
     protected JScrollPane ScrollPaneTextAreaSource;
     protected JScrollPane ScrollPaneTextAreaConsole;
@@ -140,8 +139,9 @@ public class JAlphaNotationGUI {
     public static final boolean DEBUG = true;
     public static final boolean ANSI_CONSOLE = true;
 
-    public static final Color DARK_THEME_BACKGROUND = Color.BLACK;
-    public static final Color DARK_THEME_FOREGROUND = Color.DARK_GRAY;
+    public static final Color DARK_THEME_FRAME = new Color(0x2E3032);
+    public static final Color DARK_THEME_CODE = new Color(0x202020);
+    public static final Color DARK_THEME_FOREGROUND = new Color(0x96A5B8);
 
     public static final Color NORMAL_THEME_BACKGROUND = Color.WHITE;
     public static final Color NORMAL_THEME_FOREGROUND = Color.BLACK;
@@ -351,8 +351,10 @@ public class JAlphaNotationGUI {
     }
 
     protected void InitTextArea() {
-        this.TextAreaSource = new JTextArea(10, 10);
-        this.TextAreaConsole = new JTextArea(10, 10);
+        this.TextAreaSource = new JEditorPane();
+        this.TextAreaConsole = new JEditorPane();
+        TextAreaSource.setFont(new Font("Courier New", 0, 14));
+        TextAreaConsole.setFont(new Font("Courier New", 0, 14));
 
         //this.TextAreaSource.setBackground(Color.BLACK);
     }
@@ -386,7 +388,7 @@ public class JAlphaNotationGUI {
         return this.TextAreaSource.getCaretPosition();
     }
 
-    public void SetListMemorey(String[] memory) {
+    public void SetListMemory(String[] memory) {
         this.ListMemory.setListData(memory);
     }
 
@@ -445,9 +447,6 @@ public class JAlphaNotationGUI {
     }
 
     public void ColorNormalTheme() {
-
-        //this.NORMAL_THEME_BACKGROUND;
-        //this.NORMAL_THEME_FOREGROUND;
         this.ListMemory.setBackground(NORMAL_THEME_BACKGROUND);
         this.ListMemory.setForeground(NORMAL_THEME_FOREGROUND);
 
@@ -496,8 +495,6 @@ public class JAlphaNotationGUI {
         this.MenuItemAboutAbout.setBackground(NORMAL_THEME_BACKGROUND);
         this.MenuItemAboutAbout.setForeground(NORMAL_THEME_FOREGROUND);
 
-        //this.MenuItemEdit.setBackground(DARK_THEME);
-        //this.MenuItemEdit.setForeground(NORMAL_THEME_FOREGROUND);
         this.MenuItemFileExit.setBackground(NORMAL_THEME_BACKGROUND);
         this.MenuItemFileExit.setForeground(NORMAL_THEME_FOREGROUND);
 
@@ -507,8 +504,6 @@ public class JAlphaNotationGUI {
         this.MenuItemFileNew.setBackground(NORMAL_THEME_BACKGROUND);
         this.MenuItemFileNew.setForeground(NORMAL_THEME_FOREGROUND);
 
-        //this.MenuItemFileSave.setBackground(DARK_THEME);
-        //this.MenuItemFileSave.setForeground(NORMAL_THEME_FOREGROUND);
         this.MenuItemFileSaveAs.setBackground(NORMAL_THEME_BACKGROUND);
         this.MenuItemFileSaveAs.setForeground(NORMAL_THEME_FOREGROUND);
 
@@ -523,9 +518,13 @@ public class JAlphaNotationGUI {
 
         this.TextAreaConsole.setBackground(NORMAL_THEME_BACKGROUND);
         this.TextAreaConsole.setForeground(NORMAL_THEME_FOREGROUND);
+        this.TextAreaConsole.setForeground(Color.BLACK);
+
 
         this.TextAreaSource.setBackground(NORMAL_THEME_BACKGROUND);
         this.TextAreaSource.setForeground(NORMAL_THEME_FOREGROUND);
+        this.TextAreaSource.setForeground(Color.BLACK);
+
 
         this.MainMenuBar.setBackground(NORMAL_THEME_BACKGROUND);
         this.MainMenuBar.setForeground(NORMAL_THEME_FOREGROUND);
@@ -539,92 +538,90 @@ public class JAlphaNotationGUI {
 
     public void ColorDarkTheme() {
 
-        this.ListMemory.setBackground(DARK_THEME_BACKGROUND);
+        this.ListMemory.setBackground(DARK_THEME_CODE);
         this.ListMemory.setForeground(DARK_THEME_FOREGROUND);
 
-        this.ListRegister.setBackground(DARK_THEME_BACKGROUND);
+        this.ListRegister.setBackground(DARK_THEME_CODE);
         this.ListRegister.setForeground(DARK_THEME_FOREGROUND);
 
-        this.ListRuntimeDebug.setBackground(DARK_THEME_BACKGROUND);
+        this.ListRuntimeDebug.setBackground(DARK_THEME_CODE);
         this.ListRuntimeDebug.setForeground(DARK_THEME_FOREGROUND);
 
-        this.ListStack.setBackground(DARK_THEME_BACKGROUND);
+        this.ListStack.setBackground(DARK_THEME_CODE);
         this.ListStack.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainDownPanel.setBackground(DARK_THEME_BACKGROUND);
+        this.MainDownPanel.setBackground(DARK_THEME_FRAME);
         this.MainDownPanel.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainUpPanel.setBackground(DARK_THEME_BACKGROUND);
+        this.MainUpPanel.setBackground(DARK_THEME_FRAME);
         this.MainUpPanel.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainLeftPanel.setBackground(DARK_THEME_BACKGROUND);
+        this.MainLeftPanel.setBackground(DARK_THEME_FRAME);
         this.MainLeftPanel.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainRightPanel.setBackground(DARK_THEME_BACKGROUND);
+        this.MainRightPanel.setBackground(DARK_THEME_FRAME);
         this.MainRightPanel.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainMiddlePanel.setBackground(DARK_THEME_BACKGROUND);
+        this.MainMiddlePanel.setBackground(DARK_THEME_FRAME);
         this.MainMiddlePanel.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainDownTabbedPane.setBackground(DARK_THEME_BACKGROUND);
+        this.MainDownTabbedPane.setBackground(DARK_THEME_FRAME);
         this.MainDownTabbedPane.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainMiddleTabbedPane.setBackground(DARK_THEME_BACKGROUND);
+        this.MainMiddleTabbedPane.setBackground(DARK_THEME_FRAME);
         this.MainMiddleTabbedPane.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainRightTabbedPane.setBackground(DARK_THEME_BACKGROUND);
+        this.MainRightTabbedPane.setBackground(DARK_THEME_FRAME);
         this.MainRightTabbedPane.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuAbout.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuAbout.setBackground(DARK_THEME_FRAME);
         this.MenuAbout.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuEdit.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuEdit.setBackground(DARK_THEME_FRAME);
         this.MenuEdit.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuFile.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuFile.setBackground(DARK_THEME_FRAME);
         this.MenuFile.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuItemAboutAbout.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuItemAboutAbout.setBackground(DARK_THEME_FRAME);
         this.MenuItemAboutAbout.setForeground(DARK_THEME_FOREGROUND);
 
-        //this.MenuItemEdit.setBackground(DARK_THEME);
-        //this.MenuItemEdit.setForeground(DARK_THEME_FOREGROUND);
-        this.MenuItemFileExit.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuItemFileExit.setBackground(DARK_THEME_FRAME);
         this.MenuItemFileExit.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuItemFileLoad.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuItemFileLoad.setBackground(DARK_THEME_FRAME);
         this.MenuItemFileLoad.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuItemFileNew.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuItemFileNew.setBackground(DARK_THEME_FRAME);
         this.MenuItemFileNew.setForeground(DARK_THEME_FOREGROUND);
 
-        //this.MenuItemFileSave.setBackground(DARK_THEME);
-        //this.MenuItemFileSave.setForeground(DARK_THEME_FOREGROUND);
-        this.MenuItemFileSaveAs.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuItemFileSaveAs.setBackground(DARK_THEME_FRAME);
         this.MenuItemFileSaveAs.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuItemOptionsLanguage.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuItemOptionsLanguage.setBackground(DARK_THEME_FRAME);
         this.MenuItemOptionsLanguage.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuItemOptionsOptions.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuItemOptionsOptions.setBackground(DARK_THEME_FRAME);
         this.MenuItemOptionsOptions.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MenuOptions.setBackground(DARK_THEME_BACKGROUND);
+        this.MenuOptions.setBackground(DARK_THEME_FRAME);
         this.MenuOptions.setForeground(DARK_THEME_FOREGROUND);
 
-        this.TextAreaConsole.setBackground(DARK_THEME_BACKGROUND);
+        this.TextAreaConsole.setBackground(DARK_THEME_CODE);
         this.TextAreaConsole.setForeground(DARK_THEME_FOREGROUND);
+        this.TextAreaConsole.setCaretColor(DARK_THEME_FOREGROUND);
 
-        this.TextAreaSource.setBackground(DARK_THEME_BACKGROUND);
+        this.TextAreaSource.setBackground(DARK_THEME_CODE);
         this.TextAreaSource.setForeground(DARK_THEME_FOREGROUND);
+        this.TextAreaSource.setCaretColor(DARK_THEME_FOREGROUND);
 
-        this.MainMenuBar.setBackground(DARK_THEME_BACKGROUND);
+        this.MainMenuBar.setBackground(DARK_THEME_FRAME);
         this.MainMenuBar.setForeground(DARK_THEME_FOREGROUND);
 
-        this.CheckBoxDarkTheme.setBackground(DARK_THEME_BACKGROUND);
+        this.CheckBoxDarkTheme.setBackground(DARK_THEME_FRAME);
         this.CheckBoxDarkTheme.setForeground(DARK_THEME_FOREGROUND);
 
-        this.MainFrame.setBackground(DARK_THEME_BACKGROUND);
+        this.MainFrame.setBackground(DARK_THEME_FRAME);
     }
 
     protected void InitPanels() {
@@ -1389,19 +1386,19 @@ public class JAlphaNotationGUI {
         ButtonStepInto = buttonStepInto;
     }
 
-    public JTextArea getTextAreaSource() {
+    public JEditorPane getTextAreaSource() {
         return TextAreaSource;
     }
 
-    public void setTextAreaSource(JTextArea textAreaSource) {
+    public void setTextAreaSource(JEditorPane textAreaSource) {
         TextAreaSource = textAreaSource;
     }
 
-    public JTextArea getTextAreaConsole() {
+    public JEditorPane getTextAreaConsole() {
         return TextAreaConsole;
     }
 
-    public void setTextAreaConsole(JTextArea textAreaConsole) {
+    public void setTextAreaConsole(JEditorPane textAreaConsole) {
         TextAreaConsole = textAreaConsole;
     }
 
@@ -1617,10 +1614,6 @@ public class JAlphaNotationGUI {
         CheckBoxDarkTheme = checkBoxDarkTheme;
     }
 
-    public static Color getDarkTheme() {
-        return DARK_THEME_BACKGROUND;
-    }
-
     public static Color getNormalTheme() {
         return NORMAL_THEME_BACKGROUND;
     }
@@ -1649,10 +1642,6 @@ public class JAlphaNotationGUI {
         ComboBoxLookAndFeel = comboBoxLookAndFeel;
     }
 
-    public static Color getDarkThemeBackground() {
-        return DARK_THEME_BACKGROUND;
-    }
-
     public static Color getDarkThemeForeground() {
         return DARK_THEME_FOREGROUND;
     }
@@ -1669,7 +1658,7 @@ public class JAlphaNotationGUI {
         return CurrentFilePath;
     }
 
-    public void SetCurrentFilePath(String currentFilePath){
+    public void SetCurrentFilePath(String currentFilePath) {
         CurrentFilePath = currentFilePath;
     }
 
