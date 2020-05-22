@@ -5,23 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.text.Document;
 
 import view.ActionListeners.*;
@@ -421,6 +405,7 @@ public class JAlphaNotationGUI {
     public void SetListRuntimeDebug(String[] source, int selected) {
         this.ListRuntimeDebug.setListData(source);
         this.ListRuntimeDebug.setSelectedIndex(selected);
+        this.ListRuntimeDebug.ensureIndexIsVisible(selected);
     }
 
     protected void InitTabbedPane() {
@@ -439,7 +424,8 @@ public class JAlphaNotationGUI {
         this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextAreaSource);
 
         //TODO Translation and Interface Update for languages
-        JScrollPane listRuntimeDebugScrollPane = new JScrollPane(this.ListRuntimeDebug);
+        JScrollPane listRuntimeDebugScrollPane = new JScrollPane();
+        listRuntimeDebugScrollPane.setViewportView(this.ListRuntimeDebug);
         this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneDebugRuntime(), listRuntimeDebugScrollPane);
 
         //this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextSource);
