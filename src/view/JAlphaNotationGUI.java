@@ -495,6 +495,9 @@ public class JAlphaNotationGUI {
         this.MenuItemFileNew.setBackground(NORMAL_THEME_BACKGROUND);
         this.MenuItemFileNew.setForeground(NORMAL_THEME_FOREGROUND);
 
+        this.MenuItemFileSave.setBackground(NORMAL_THEME_BACKGROUND);
+        this.MenuItemFileSave.setForeground(NORMAL_THEME_FOREGROUND);
+
         this.MenuItemFileSaveAs.setBackground(NORMAL_THEME_BACKGROUND);
         this.MenuItemFileSaveAs.setForeground(NORMAL_THEME_FOREGROUND);
 
@@ -585,6 +588,9 @@ public class JAlphaNotationGUI {
 
         this.MenuItemFileNew.setBackground(DARK_THEME_FRAME);
         this.MenuItemFileNew.setForeground(DARK_THEME_FOREGROUND);
+
+        this.MenuItemFileSave.setBackground(DARK_THEME_FRAME);
+        this.MenuItemFileSave.setForeground(DARK_THEME_FOREGROUND);
 
         this.MenuItemFileSaveAs.setBackground(DARK_THEME_FRAME);
         this.MenuItemFileSaveAs.setForeground(DARK_THEME_FOREGROUND);
