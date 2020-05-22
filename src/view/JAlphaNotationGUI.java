@@ -346,6 +346,8 @@ public class JAlphaNotationGUI {
     protected void InitTextArea() {
         this.TextAreaSource = new JEditorPane();
         this.TextAreaConsole = new JEditorPane();
+        TextAreaSource.setFont(new Font("Courier New", 0, 14));
+        TextAreaConsole.setFont(new Font("Courier New", 0, 14));
 
         //this.TextAreaSource.setBackground(Color.BLACK);
     }
