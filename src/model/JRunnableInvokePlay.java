@@ -71,7 +71,7 @@ public class JRunnableInvokePlay implements Runnable {
 			
 			
 			gui.SetListStack(sStack);
-			gui.SetListMemorey(memory);
+			gui.SetListMemory(memory);
 			gui.SetListRegister(register);
 			//gui.SetListRuntimeDebug(arrSource, pc);
 			gui.SetListRuntimeDebug(arrSource, ln);

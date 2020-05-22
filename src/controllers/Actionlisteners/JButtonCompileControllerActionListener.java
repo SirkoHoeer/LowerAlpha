@@ -78,7 +78,7 @@ public class JButtonCompileControllerActionListener implements ActionListener {
             
 
             gui.SetListStack(sStack);
-            gui.SetListMemorey(memory);
+            gui.SetListMemory(memory);
             gui.SetListRegister(register);
 
             gui.SetSelectedAfterCompile(1);

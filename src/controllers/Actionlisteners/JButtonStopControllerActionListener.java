@@ -76,7 +76,7 @@ public class JButtonStopControllerActionListener implements ActionListener {
 			int pc = model.getProgramCounter();
 
 			gui.SetListStack(sStack);
-			gui.SetListMemorey(memory);
+			gui.SetListMemory(memory);
 			gui.SetListRegister(register);
 
 			gui.SetSelectedAfterCompile(1);
