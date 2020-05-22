@@ -29,7 +29,7 @@ public class JButtonNewViewActionListener implements ActionListener {
 		String[] nll = new String[1];
 		nll[0] = "\n";
 		gui.SetListStack(nll);
-        gui.SetListMemorey(nll);
+        gui.SetListMemory(nll);
         gui.SetListRegister(nll);	
         gui.SetListRuntimeDebug(nll, 0);	
 	}

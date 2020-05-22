@@ -405,7 +405,7 @@ public class JAlphaNotationGUI {
         return this.TextAreaSource.getCaretPosition();
     }
 
-    public void SetListMemorey(String[] memory) {
+    public void SetListMemory(String[] memory) {
         this.ListMemory.setListData(memory);
     }
 
