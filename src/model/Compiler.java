@@ -104,7 +104,7 @@ public class Compiler {
             inst.setInstructionIndex(t.getInstructionIndex());
             System.out.println("OP | FLG1  | DEST  | FLG2  | SRC1  | FLG2  | SRC2  |");
             System.out.println(
-                    inst.op + "  |   " + 
+                    inst.op + "  |   " +
                     inst.flags[0]+ "   |   " + inst.addrs[0] + "   |   " +
                     inst.flags[1]+ "   |   " + inst.addrs[1] + "   |   " +
                     inst.flags[2]+ "   |   " + inst.addrs[2] );
@@ -120,7 +120,7 @@ public class Compiler {
             }
         }
         if (!mainReturn) {
-            throw new CompileException(prog.getEntryPoint(), "Main funktion has to end with return");
+            throw new CompileException(prog.getEntryPoint(), "Main function has to end with return");
         }
 
         return prog;
@@ -199,7 +199,7 @@ public class Compiler {
             return;
         } /*if(t.addrs[0] == null)
 		{
-			break;	
+			break;
 		}*/ else if (t.addrs[0].charAt(0) == 'α') {
             if (registerLabelMap.get(t.addrs[0]) == null) {
                 registerLabelMap.put(t.addrs[0], registerLabelIndex); //fügt das Pseudonym ggf hinzu
@@ -294,7 +294,7 @@ public class Compiler {
                 opCode = Instruction.OP_RETURN;
                 break;
             default:
-                throw new CompileException(token.getLineNumber(), "Crititcal Error: Unkown regular Expression");
+                throw new CompileException(token.getLineNumber(), "Critical Error: Unknown regular Expression");
         }
         return opCode;
     }
@@ -364,7 +364,7 @@ public class Compiler {
                     }
                     System.out.println(convertMemoryAddress(token.addrs[i]));
                     System.out.println(memoryLabelMap.get(convertMemoryAddress(token.addrs[i])));
-                    
+
                     addresses[i] = convertMemoryAddress(token.addrs[i]);
                     break;
                 case Instruction.FLAG_CONSTANT:
