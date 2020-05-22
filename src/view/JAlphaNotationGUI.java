@@ -1,21 +1,15 @@
 package view;
 
+import view.ActionListeners.*;
+import view.translations.*;
+
+import javax.swing.*;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.text.Document;
-
-import view.ActionListeners.*;
-import view.translations.ITranslation;
-import view.translations.JTranslationEnglish;
-import view.translations.JTranslationFrench;
-import view.translations.JTranslationGerman;
-import view.translations.JTranslationJapanese;
-import view.translations.JTranslationPolish;
-import view.translations.JTranslationRussian;
 
 public class JAlphaNotationGUI {
 
