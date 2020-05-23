@@ -424,9 +424,15 @@ public class JAlphaNotationGUI {
         //this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextSource);
         this.MainDownTabbedPane.addTab(IGUITranslation.getMainDownTabbedPaneConsole(), this.ScrollPaneTextAreaConsole);
 
-        this.MainRightTabbedPane.addTab(IGUITranslation.getMainRightTabbedPaneRegister(), this.ListRegister);
-        this.MainRightTabbedPane.addTab(IGUITranslation.getMainRightTabbedPaneMemory(), this.ListMemory);
-        this.MainRightTabbedPane.addTab(IGUITranslation.getMainRightTabbedPaneStack(), this.ListStack);
+        JScrollPane listRegisterScrollPane = new JScrollPane();
+        JScrollPane listMemoryScrollPane = new JScrollPane();
+        JScrollPane listStackScrollPane = new JScrollPane();
+        listRegisterScrollPane.setViewportView(this.ListRegister);
+        listMemoryScrollPane.setViewportView(this.ListMemory);
+        listStackScrollPane.setViewportView(this.ListStack);
+        this.MainRightTabbedPane.addTab(IGUITranslation.getMainRightTabbedPaneRegister(), listRegisterScrollPane);
+        this.MainRightTabbedPane.addTab(IGUITranslation.getMainRightTabbedPaneMemory(), listMemoryScrollPane);
+        this.MainRightTabbedPane.addTab(IGUITranslation.getMainRightTabbedPaneStack(), listStackScrollPane);
     }
 
     protected void ColorPanels() {
