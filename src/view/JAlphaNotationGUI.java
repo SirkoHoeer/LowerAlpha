@@ -142,6 +142,8 @@ public class JAlphaNotationGUI {
 
     public static final Dimension BUTTON_SIZE = new Dimension(42, 42);
 
+    public static final Font FONT = new Font("Courier New", 0, 14);
+
 
     public JAlphaNotationGUI() {
         this.GUITranslations = new ArrayList<ITranslation>();
@@ -347,10 +349,8 @@ public class JAlphaNotationGUI {
     protected void InitTextArea() {
         this.TextAreaSource = new JEditorPane();
         this.TextAreaConsole = new JEditorPane();
-        TextAreaSource.setFont(new Font("Courier New", 0, 14));
-        TextAreaConsole.setFont(new Font("Courier New", 0, 14));
-
-        //this.TextAreaSource.setBackground(Color.BLACK);
+        TextAreaSource.setFont(FONT);
+        TextAreaConsole.setFont(FONT);
     }
 
     public void setListRuntimeDebugCompileError(String[] arr, int index, String error) {
@@ -363,15 +363,19 @@ public class JAlphaNotationGUI {
     protected void InitLists() {
         this.ListMemory = new JList<>();
         this.ListMemory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.ListMemory.setFont(FONT);
 
         this.ListRegister = new JList<>();
         this.ListRegister.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.ListRegister.setFont(FONT);
 
         this.ListStack = new JList<>();
         this.ListStack.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.ListStack.setFont(FONT);
 
         this.ListRuntimeDebug = new JList<>();
         this.ListRuntimeDebug.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.ListRuntimeDebug.setFont(FONT);
     }
 
     public void SetCaretPositonSourceTextField(int i) {
@@ -421,7 +425,6 @@ public class JAlphaNotationGUI {
         //TODO Translation and Interface Update for languages
         this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneDebugRuntime(), this.ListRuntimeDebug);
 
-        //this.MainMiddleTabbedPane.addTab(IGUITranslation.getMainMiddleTabbedPaneSource(), this.ScrollPaneTextSource);
         this.MainDownTabbedPane.addTab(IGUITranslation.getMainDownTabbedPaneConsole(), this.ScrollPaneTextAreaConsole);
 
         this.MainRightTabbedPane.addTab(IGUITranslation.getMainRightTabbedPaneRegister(), this.ListRegister);
