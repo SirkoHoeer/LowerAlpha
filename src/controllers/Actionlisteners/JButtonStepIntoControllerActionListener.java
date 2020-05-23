@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import model.JModel;
@@ -27,14 +29,20 @@ public class JButtonStepIntoControllerActionListener implements ActionListener {
 			System.out.println("Button Step-Into has been clicked. controller");
 		}
 		model.Step();
-		// gui.SetListMemory(model.getMemory());
-		// gui.SetListRegister(model.getRegister());
 
-		String[] memory = new String[this.model.getMemoryLabelMap().size()];
+		HashMap<String, Integer> memoryToList = new HashMap<>();
+		for (Entry<String, Integer> entry : this.model.getMemoryLabelMap().entrySet()) {
+			memoryToList.put(entry.getKey(),this.model.getMemory().get(entry.getKey()));
+		}
+		for (Entry<String, Integer> entry : this.model.getMemory().entrySet()) {
+			memoryToList.putIfAbsent(entry.getKey(), entry.getValue());
+		}
+
+		String[] memory = new String[memoryToList.size()];
 		String[] register = new String[this.model.getRegisterLabelMap().size()];
 
 		int counter = 0;
-		for (Entry<String, Integer> entry : this.model.getMemoryLabelMap().entrySet()) {
+		for (Entry<String, Integer> entry : memoryToList.entrySet()) {
 			memory[counter] = "ρ(" + entry.getKey() + ") := "
 					+ this.model.getMemory().get(entry.getKey());
 			counter++;

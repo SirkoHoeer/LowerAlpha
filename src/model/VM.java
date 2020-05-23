@@ -248,7 +248,7 @@ public class VM extends Thread {
                         this.memory.put(String.valueOf(register[Integer.parseInt(i.addrs[0])]), value);
                         break;
                     case Instruction.FLAG_IN_MEM_MEM:
-                        this.memory.put(String.valueOf(memory.get(String.valueOf(register[Integer.parseInt(i.addrs[0])]))), value);
+                        this.memory.put(String.valueOf(memory.get(i.addrs[0])), value);
                         break;
                     default:
                         break;
